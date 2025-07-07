@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    run-on: tf-runner 
+    runs-on: tf-runner 
 
     steps:
       - uses: actions/checkout@v3
