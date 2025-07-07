@@ -1,0 +1,39 @@
+generate "provider" {
+    path = "provider.tf"
+    if_exists = "overwrite_terragrunt"
+    contents = <<EOF
+provider "aws" {
+  region = "ap-northeast-3"
+}
+EOF    
+}
+
+generate "terraform" {
+    path = "terraform.tf"
+    if_exists = "overwrite_terragrunt"
+    contents = <<EOF
+terraform {
+  required_version = "v1.12.2"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+  }
+}
+EOF    
+}
+
+remote_state {
+  backend = "s3"
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite"
+  }
+  config = {
+    bucket         = "devops-25b1-akg"
+    key            = "${path_relative_to_include()}/terraform.tfstate"
+    region         = "ap-south-1"
+    encrypt        = true
+  }
+}

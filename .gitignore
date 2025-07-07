@@ -1,0 +1,7 @@
+.terraform/
+*.log
+*.zip
+*.tar.gz
+*.vsix
+*.DS_Store
+
