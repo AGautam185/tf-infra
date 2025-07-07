@@ -1,0 +1,14 @@
+name: Starter workflow Demo
+
+on:
+  push
+
+jobs:
+  build:
+    run-on: tf-runner 
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: demo workflow job
+        run: echo This is a demo start workflow 
