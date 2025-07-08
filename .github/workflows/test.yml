@@ -21,8 +21,6 @@ jobs:
   deploy:
     runs-on: tf-runner
 
-    needs: build
-
     steps:
       - name: deploy workflow job
         run: echo This is a demo deploy workflow job
