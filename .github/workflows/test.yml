@@ -5,22 +5,30 @@ on:
     branches:
       - main
   pull_request:
-    types:
-      - opened
 
 jobs:
   build:
     runs-on: tf-runner 
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: demo workflow job
-        run: echo This is a demo start workflow
-  
-  deploy:
-    runs-on: tf-runner
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-3
 
-    steps:
-      - name: deploy workflow job
-        run: echo This is a demo deploy workflow job  
+      - name: Set Directory
+        run: pwd
+
+       # Generates an execution plan for Terraform
+      - name: Terragrunt Plan
+        run: terragrunt plan --all
+
+       # On push to "main", build or change infrastructure according to Terraform configuration files
+       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+      - name: Terragrunt Apply
+        if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        run: terraform apply --all -auto-approve -input=false
