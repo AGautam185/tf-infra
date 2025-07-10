@@ -9,7 +9,7 @@ locals {
 }
 
 terraform {
-  source = "../../../../../tf-modules/aws/ec2/"
+  source = "git::git@github.com-tf-modules:AGautam185/tf-modules.git//aws/ec2?ref=aws-ec2-v1.0"
 }
 
 dependency "vpc" {

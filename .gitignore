@@ -1,3 +1,5 @@
+.terraform-cache/
+.terraform.lock.hcl
 .terraform/
 *.log
 *.zip
